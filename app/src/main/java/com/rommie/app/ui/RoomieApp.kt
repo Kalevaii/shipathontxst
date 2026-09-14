@@ -6,20 +6,23 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import com.rommie.app.Greeting
+import com.rommie.app.data.mock.RoomieSampleData
 import com.rommie.app.ui.navigation.RoomieDestination
 
-// Feature owners supply screen lambdas with their own state/ViewModels; Activity stays stable.
 @Composable
-fun RoomieApp(
-    home: @Composable () -> Unit = { Greeting("Android") },
-    chores: @Composable () -> Unit = { Text("Chores — coming soon") },
-    verification: @Composable () -> Unit = { Text("Review — coming soon") },
-    leaderboard: @Composable () -> Unit = { Text("Points — coming soon") },
-) {
+fun RoomieApp() {
+    val demo = remember { DemoStore(RoomieSampleData.household) }
     var destinationName by rememberSaveable { mutableStateOf(RoomieDestination.HOME.name) }
+    var addChoreOpen by remember { mutableStateOf(false) }
+    var activeTaskId by remember { mutableStateOf<String?>(null) }
+    var reviewTaskId by remember { mutableStateOf<String?>(null) }
     val destination = RoomieDestination.valueOf(destinationName)
-    BackHandler(enabled = destination != RoomieDestination.HOME) {
+    BackHandler(enabled = addChoreOpen || activeTaskId != null || reviewTaskId != null) {
+        addChoreOpen = false
+        activeTaskId = null
+        reviewTaskId = null
+    }
+    BackHandler(enabled = !addChoreOpen && activeTaskId == null && reviewTaskId == null && destination != RoomieDestination.HOME) {
         destinationName = RoomieDestination.HOME.name
     }
     Scaffold(modifier = Modifier.fillMaxSize(), bottomBar = {
@@ -33,11 +36,13 @@ fun RoomieApp(
     }) { padding ->
         Box(Modifier.fillMaxSize().padding(padding)) {
             when (destination) {
-                RoomieDestination.HOME -> home()
-                RoomieDestination.CHORES -> chores()
-                RoomieDestination.VERIFICATION -> verification()
-                RoomieDestination.LEADERBOARD -> leaderboard()
+                RoomieDestination.HOME -> HomeScreen(demo, { destinationName = RoomieDestination.CHORES.name }, { activeTaskId = it }, { reviewTaskId = it })
+                RoomieDestination.CHORES -> TasksScreen(demo, { addChoreOpen = true }, { activeTaskId = it }, { reviewTaskId = it })
+                RoomieDestination.LEADERBOARD -> LeaderboardScreen(demo)
             }
         }
     }
+    if (addChoreOpen) AddChoreDialog(demo) { addChoreOpen = false }
+    activeTaskId?.let { ProofDialog(demo, it) { activeTaskId = null } }
+    reviewTaskId?.let { ReviewDialog(demo, it) { reviewTaskId = null } }
 }
