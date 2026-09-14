@@ -1,0 +1,19 @@
+--------- beginning of main
+09-14 16:12:29.175 17417 17438 I RoomieCompletionTest: NOT TESTED live Storage: explicit metadata-only run; proof path is a test fixture, not an uploaded asset
+09-14 16:12:29.415 17417 17438 I RoomieCompletionTest: PASS denied: status without completion
+09-14 16:12:29.713 17417 17438 I RoomieCompletionTest: PASS denied: completion without status
+09-14 16:12:31.535 17417 17438 I RoomieCompletionTest: PASS denied: peer completes worker task directly
+09-14 16:12:33.479 17417 17438 I RoomieCompletionTest: PASS atomic completion/proof metadata/status, identical retry and conflicting retry
+09-14 16:12:33.674 17417 17438 I RoomieCompletionTest: PASS denied: protected completion edit
+09-14 16:12:33.847 17417 17438 I RoomieCompletionTest: PASS denied: protected completion edit
+09-14 16:12:34.133 17417 17438 I RoomieCompletionTest: PASS denied: protected completion edit
+09-14 16:12:34.363 17417 17438 I RoomieCompletionTest: PASS denied: completion deletion
+09-14 16:12:34.577 17417 17438 I RoomieCompletionTest: PASS denied: client verification
+09-14 16:12:34.794 17417 17438 I RoomieCompletionTest: PASS denied: client reward
+09-14 16:12:35.484 17417 17438 I RoomieCompletionTest: PASS denied: peer private user read
+09-14 16:12:35.484 17417 17438 I RoomieCompletionTest: PASS peer completion reads after sign-in; private profile remains denied
+09-14 16:12:36.764 17417 17438 I RoomieCompletionTest: PASS denied: outsider completion read
+09-14 16:12:36.877 17417 17438 I RoomieCompletionTest: PASS denied: outsider completion list
+09-14 16:12:36.991 17417 17438 I RoomieCompletionTest: PASS denied: outsider submission
+09-14 16:12:37.185 17417 17438 I RoomieCompletionTest: PASS denied: signed-out completion read
+09-14 16:12:37.790 17417 17438 I RoomieCompletionTest: ALL STAGE 2 FIRESTORE CHECKS PASSED run=c990af91cd46 household=j49crinZOXJwbwMuChXS liveStorage=false

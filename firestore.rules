@@ -1,0 +1,219 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    function validProfile() {
+      let data = request.resource.data;
+      return data.keys().hasAll(['name', 'email'])
+        && data.keys().hasOnly(['name', 'email'])
+        && data.name is string
+        && data.name.size() >= 1 && data.name.size() <= 100
+        && data.name.matches('.*[^\\s].*')
+        && !data.name.matches('.*[\\x00-\\x1F\\x7F].*')
+        && data.email is string
+        && data.email.size() >= 3 && data.email.size() <= 254;
+    }
+
+    match /users/{uid} {
+      allow get: if isOwner(uid);
+      allow list, delete: if false;
+      allow create: if isOwner(uid) && validProfile()
+        && request.resource.data.email == request.auth.token.email;
+      allow update: if isOwner(uid) && validProfile()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name']);
+    }
+
+
+    function isMember(hid) {
+      return request.auth != null
+        && get(/databases/$(database)/documents/households/$(hid)/members/$(request.auth.uid)).data.userId == request.auth.uid;
+    }
+    function validHouseholdName(name) {
+      return name is string && name.size() >= 1 && name.size() <= 100
+        && name.matches('.*[^\\s].*') && !name.matches('.*[\\x00-\\x1F\\x7F].*');
+    }
+    function validCode(code) {
+      return code is string && code.matches('[A-Z0-9]{6}');
+    }
+
+    function validRecurrence(value) {
+      return value == null || (value is map && (
+        (value.keys().hasAll(['type', 'interval']) && value.keys().hasOnly(['type', 'interval'])
+          && value.type == 'EVERY_DAYS' && value.interval is int && value.interval >= 1 && value.interval <= 365)
+        || (value.keys().hasAll(['type', 'weekdays']) && value.keys().hasOnly(['type', 'weekdays'])
+          && value.type == 'WEEKLY' && value.weekdays is list
+          && value.weekdays.size() >= 1 && value.weekdays.size() <= 7
+          && value.weekdays.toSet().size() == value.weekdays.size()
+          && value.weekdays.hasOnly(['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']))));
+    }
+    function validChore(data, hid) {
+      return data.keys().hasAll(['householdId', 'title', 'description', 'estimatedMinutes', 'difficulty', 'maxPoints', 'createdBy', 'recurrence', 'createdAt'])
+        && data.keys().hasOnly(['householdId', 'title', 'description', 'estimatedMinutes', 'difficulty', 'maxPoints', 'createdBy', 'recurrence', 'createdAt'])
+        && data.householdId == hid
+        && data.title is string && data.title.size() >= 1 && data.title.size() <= 100
+        && data.title.matches('.*[^\\s].*') && !data.title.matches('.*[\\x00-\\x1F\\x7F-\\x9F].*')
+        && data.description is string && data.description.size() <= 2000
+        && data.estimatedMinutes is int && data.estimatedMinutes >= 1 && data.estimatedMinutes <= 1440
+        && data.difficulty in ['EASY', 'MEDIUM', 'HARD']
+        && data.maxPoints is int && data.maxPoints >= 0 && data.maxPoints <= 1000
+        && data.createdBy is string && data.createdAt is timestamp
+        && validRecurrence(data.recurrence);
+    }
+
+    function validAssignment(data, hid) {
+      let chore = get(/databases/$(database)/documents/households/$(hid)/chores/$(data.choreId));
+      return data.keys().hasAll(['householdId', 'choreId', 'assignedUserId', 'dueAt', 'workloadValue', 'maxPoints', 'status', 'createdBy', 'createdAt'])
+        && data.keys().hasOnly(['householdId', 'choreId', 'assignedUserId', 'dueAt', 'workloadValue', 'maxPoints', 'status', 'createdBy', 'createdAt'])
+        && data.householdId == hid && chore.data.householdId == hid
+        && data.choreId is string && data.choreId.matches('[^/]+')
+        && data.assignedUserId is string && data.assignedUserId.matches('[^/]+')
+        && get(/databases/$(database)/documents/households/$(hid)/members/$(data.assignedUserId)).data.userId == data.assignedUserId
+        && data.dueAt is int && data.dueAt > 0 && data.dueAt <= 253402300799999
+        && data.workloadValue is int && data.workloadValue in [1, 2, 3]
+        && data.workloadValue == (chore.data.difficulty == 'EASY' ? 1 : (chore.data.difficulty == 'MEDIUM' ? 2 : (chore.data.difficulty == 'HARD' ? 3 : 0)))
+        && data.maxPoints is int && data.maxPoints == chore.data.maxPoints
+        && data.status == 'ASSIGNED' && data.createdBy == request.auth.uid
+        && data.createdAt == request.time;
+    }
+
+    match /households/{hid} {
+      allow get: if isMember(hid);
+      allow list, update, delete: if false;
+      allow create: if request.auth != null && hid.matches('[A-Za-z0-9]{20}')
+        && request.resource.data.keys().hasAll(['name', 'inviteCode', 'createdBy', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['name', 'inviteCode', 'createdBy', 'createdAt'])
+        && validHouseholdName(request.resource.data.name)
+        && validCode(request.resource.data.inviteCode)
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.createdAt == request.time
+        && getAfter(/databases/$(database)/documents/userHouseholds/$(request.auth.uid)).data.householdId == hid
+        && getAfter(/databases/$(database)/documents/households/$(hid)/members/$(request.auth.uid)).data.userId == request.auth.uid
+        && getAfter(/databases/$(database)/documents/householdInvites/$(request.resource.data.inviteCode)).data.householdId == hid;
+
+      match /assignments/{assignmentId} {
+        allow get, list: if isMember(hid);
+        allow create: if isMember(hid) && assignmentId.matches('[A-Za-z0-9_-]{1,128}')
+          && validAssignment(request.resource.data, hid);
+        allow update: if isMember(hid) && resource.data.assignedUserId == request.auth.uid
+          && resource.data.status == 'ASSIGNED'
+          && request.resource.data.status == 'AWAITING_VERIFICATION'
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+          && !exists(/databases/$(database)/documents/households/$(hid)/completions/$(assignmentId))
+          && getAfter(/databases/$(database)/documents/households/$(hid)/completions/$(assignmentId)).data.completedBy == request.auth.uid;
+        allow delete: if false;
+      }
+
+      match /completions/{assignmentId} {
+        function validCompletion() {
+          let data = request.resource.data;
+          let assignment = get(/databases/$(database)/documents/households/$(hid)/assignments/$(assignmentId)).data;
+          let proof = data.proof[0];
+          return data.keys().hasAll(['householdId', 'assignmentId', 'completedBy', 'proof', 'submittedAt', 'result'])
+            && data.keys().hasOnly(['householdId', 'assignmentId', 'completedBy', 'proof', 'submittedAt', 'result'])
+            && assignmentId.matches('[A-Za-z0-9_-]{1,128}')
+            && data.householdId == hid && data.assignmentId == assignmentId
+            && data.completedBy == request.auth.uid && assignment.assignedUserId == request.auth.uid
+            && assignment.householdId == hid && assignment.status == 'ASSIGNED'
+            && getAfter(/databases/$(database)/documents/households/$(hid)/assignments/$(assignmentId)).data.status == 'AWAITING_VERIFICATION'
+            && data.submittedAt == request.time && data.result == null
+            && data.proof is list && data.proof.size() == 1
+            && proof is map && proof.keys().hasAll(['id', 'mediaUrl', 'type'])
+            && proof.keys().hasOnly(['id', 'mediaUrl', 'type'])
+            && proof.id is string && proof.id.matches('[A-Za-z0-9_-]{1,128}')
+            && proof.type in ['PHOTO', 'VIDEO']
+            && proof.mediaUrl == 'households/' + hid + '/completions/' + assignmentId + '/proof/' + request.auth.uid + '/' + proof.id;
+        }
+        allow get, list: if isMember(hid);
+        allow create: if isMember(hid) && validCompletion();
+        allow update, delete: if false;
+
+        match /reviews/{reviewerUid} {
+          function reviewContext() {
+            let completion = get(/databases/$(database)/documents/households/$(hid)/completions/$(assignmentId)).data;
+            let assignment = get(/databases/$(database)/documents/households/$(hid)/assignments/$(assignmentId)).data;
+            return completion.householdId == hid && completion.assignmentId == assignmentId
+              && assignment.householdId == hid && completion.completedBy == assignment.assignedUserId
+              && completion.completedBy != request.auth.uid && assignment.assignedUserId != request.auth.uid;
+          }
+          // Only an eligible reviewer can fetch their own document, including checking absence.
+          // No one using client credentials may enumerate reviews or read somebody else's score.
+          allow get: if isOwner(reviewerUid) && isMember(hid) && reviewContext();
+          allow list, update, delete: if false;
+          allow create: if isOwner(reviewerUid) && isMember(hid) && reviewContext()
+            && get(/databases/$(database)/documents/households/$(hid)/assignments/$(assignmentId)).data.status == 'AWAITING_VERIFICATION'
+            && get(/databases/$(database)/documents/households/$(hid)/completions/$(assignmentId)).data.result == null
+            && request.resource.data.keys().hasAll(['householdId', 'completionId', 'reviewerId', 'rating', 'submittedAt'])
+            && request.resource.data.keys().hasOnly(['householdId', 'completionId', 'reviewerId', 'rating', 'submittedAt'])
+            && request.resource.data.householdId == hid && request.resource.data.completionId == assignmentId
+            && request.resource.data.reviewerId == request.auth.uid
+            && request.resource.data.rating is int && request.resource.data.rating >= 1 && request.resource.data.rating <= 10
+            && request.resource.data.submittedAt == request.time;
+        }
+      }
+
+      match /chores/{choreId} {
+        allow get, list: if isMember(hid);
+        allow create: if isMember(hid) && validChore(request.resource.data, hid)
+          && request.resource.data.createdBy == request.auth.uid
+          && request.resource.data.createdAt == request.time;
+        allow update: if isMember(hid) && validChore(request.resource.data, hid)
+          && request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['title', 'description', 'estimatedMinutes', 'difficulty', 'maxPoints', 'recurrence']);
+        allow delete: if false;
+      }
+
+      match /members/{uid} {
+        allow get, list: if isMember(hid);
+        allow update, delete: if false;
+        allow create: if isOwner(uid)
+          && request.resource.data.keys().hasAll(['userId', 'displayName', 'joinedAt', 'contributionPoints'])
+          && request.resource.data.keys().hasOnly(['userId', 'displayName', 'joinedAt', 'contributionPoints'])
+          && request.resource.data.userId == uid
+          && validHouseholdName(request.resource.data.displayName)
+          && request.resource.data.displayName == get(/databases/$(database)/documents/users/$(uid)).data.name
+          && request.resource.data.joinedAt == request.time
+          && request.resource.data.contributionPoints is int
+          && request.resource.data.contributionPoints == 0
+          && !exists(/databases/$(database)/documents/userHouseholds/$(uid))
+          && getAfter(/databases/$(database)/documents/userHouseholds/$(uid)).data.householdId == hid;
+      }
+    }
+
+    // Exact-code lookup is allowed, but invite codes cannot be enumerated through a list query.
+    match /householdInvites/{code} {
+      allow get: if request.auth != null && validCode(code);
+      allow list, update, delete: if false;
+      allow create: if request.auth != null && validCode(code)
+        && request.resource.data.keys().hasAll(['householdId'])
+        && request.resource.data.keys().hasOnly(['householdId'])
+        && request.resource.data.householdId is string
+        && request.resource.data.householdId.matches('[A-Za-z0-9]{20}')
+        && !exists(/databases/$(database)/documents/households/$(request.resource.data.householdId))
+        && getAfter(/databases/$(database)/documents/households/$(request.resource.data.householdId)).data.createdBy == request.auth.uid
+        && getAfter(/databases/$(database)/documents/households/$(request.resource.data.householdId)).data.inviteCode == code;
+    }
+
+    // Single, private, immutable pointer enforces one household per user for this MVP.
+    match /userHouseholds/{uid} {
+      allow get: if isOwner(uid);
+      allow list, update, delete: if false;
+      allow create: if isOwner(uid)
+        && request.resource.data.keys().hasAll(['householdId', 'inviteCode'])
+        && request.resource.data.keys().hasOnly(['householdId', 'inviteCode'])
+        && request.resource.data.householdId is string
+        && request.resource.data.householdId.matches('[A-Za-z0-9]{20}')
+        && validCode(request.resource.data.inviteCode)
+        && getAfter(/databases/$(database)/documents/households/$(request.resource.data.householdId)/members/$(uid)).data.userId == uid
+        && getAfter(/databases/$(database)/documents/households/$(request.resource.data.householdId)).data.inviteCode == request.resource.data.inviteCode
+        && getAfter(/databases/$(database)/documents/householdInvites/$(request.resource.data.inviteCode)).data.householdId == request.resource.data.householdId;
+    }
+
+    // All other feature access remains deferred.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

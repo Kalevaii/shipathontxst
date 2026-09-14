@@ -1,0 +1,18 @@
+--------- beginning of main
+09-14 16:23:59.329 18052 18069 I RoomieReviewTest: PASS worker completion; proof metadata fixture only, no live Storage upload
+09-14 16:24:03.775 18052 18069 I RoomieReviewTest: PASS denied: immutable review fields
+09-14 16:24:04.082 18052 18069 I RoomieReviewTest: PASS denied: immutable review fields
+09-14 16:24:04.399 18052 18069 I RoomieReviewTest: PASS denied: immutable review fields
+09-14 16:24:05.065 18052 18069 I RoomieReviewTest: PASS denied: delete review
+09-14 16:24:05.182 18052 18069 I RoomieReviewTest: PASS denied: reviewer list
+09-14 16:24:05.182 18052 18069 I RoomieReviewTest: PASS review 10, own status, duplicate rejection and immutable fields
+09-14 16:24:05.834 18052 18069 I RoomieReviewTest: PASS denied: creator reads another rating before review
+09-14 16:24:06.530 18052 18069 I RoomieReviewTest: PASS denied: creator reads another rating after review
+09-14 16:24:06.530 18052 18069 I RoomieReviewTest: PASS second independent review 1; no peer rating visibility
+09-14 16:24:07.399 18052 18069 I RoomieReviewTest: PASS denied: direct self-review
+09-14 16:24:07.501 18052 18069 I RoomieReviewTest: PASS denied: worker reads rating
+09-14 16:24:07.584 18052 18069 I RoomieReviewTest: PASS denied: worker lists ratings
+09-14 16:24:09.495 18052 18069 I RoomieReviewTest: PASS denied: outsider submits review
+09-14 16:24:09.662 18052 18069 I RoomieReviewTest: PASS denied: outsider reads review
+09-14 16:24:09.856 18052 18069 I RoomieReviewTest: PASS denied: signed-out reads review
+09-14 16:24:10.538 18052 18069 I RoomieReviewTest: ALL STAGE 3 LIVE CHECKS PASSED run=56517ff6de90 household=jvZRExFHKhLFFZbR22Q1

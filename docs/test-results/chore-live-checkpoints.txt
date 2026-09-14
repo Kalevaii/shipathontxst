@@ -1,0 +1,46 @@
+--------- beginning of main
+09-14 15:35:58.306 15814 15831 I RoomieLiveTest: PASS signup/profile creator=gDNjVMSaVTdaLS58gA9AOvradbG3 email=roomie-test-4d8c6c08e161-a@example.com
+09-14 15:35:58.722 15814 15831 I RoomieLiveTest: PASS signout/signin
+09-14 15:35:59.665 15814 15831 I RoomieLiveTest: PASS create household=LZ37B0IGCs7c3BwCb97x invite=SM8NHH
+09-14 15:36:01.135 15814 15831 I RoomieLiveTest: PASS chore create/read/list and recurrence chore=IGtEb5p7bBlSJvqmfitf
+09-14 15:36:02.198 15814 15831 I RoomieLiveTest: PASS denied: nonmember household read
+09-14 15:36:02.270 15814 15831 I RoomieLiveTest: PASS denied: nonmember roster read
+09-14 15:36:02.362 15814 15831 I RoomieLiveTest: PASS denied: prejoin chore read
+09-14 15:36:02.443 15814 15831 I RoomieLiveTest: PASS denied: prejoin chore list
+09-14 15:36:02.996 15814 15831 I RoomieLiveTest: PASS integration: join return/read
+09-14 15:36:03.264 15814 15831 I RoomieLiveTest: PASS integration: joiner direct household read
+09-14 15:36:03.399 15814 15831 I RoomieLiveTest: PASS integration: joiner creator membership read
+09-14 15:36:03.658 15814 15831 I RoomieLiveTest: PASS integration: joiner current household read
+09-14 15:36:03.760 15814 15831 I RoomieLiveTest: PASS integration: joiner roster read
+09-14 15:36:04.950 15814 15831 I RoomieLiveTest: PASS integration: joiner reads after re-signin
+09-14 15:36:04.950 15814 15831 I RoomieLiveTest: PASS membership committed joiner=yOVGpwAzACeTVALl6Q6oqktAqvr1 email=roomie-test-4d8c6c08e161-b@example.com
+09-14 15:36:06.463 15814 15831 I RoomieLiveTest: PASS denied: chore creator edit
+09-14 15:36:06.727 15814 15831 I RoomieLiveTest: PASS denied: chore household edit
+09-14 15:36:06.971 15814 15831 I RoomieLiveTest: PASS denied: chore creation timestamp edit
+09-14 15:36:07.411 15814 15831 I RoomieLiveTest: PASS denied: chore deletion
+09-14 15:36:07.411 15814 15831 I RoomieLiveTest: PASS joiner chore list/update and immutable metadata
+09-14 15:36:07.497 15814 15831 I RoomieLiveTest: PASS denied: peer private profile read
+09-14 15:36:07.583 15814 15831 I RoomieLiveTest: PASS denied: peer private lookup read
+09-14 15:36:07.863 15814 15831 I RoomieLiveTest: PASS denied: add another UID
+09-14 15:36:08.359 15814 15831 I RoomieLiveTest: PASS denied: change own contribution points
+09-14 15:36:08.539 15814 15831 I RoomieLiveTest: PASS denied: add workload score
+09-14 15:36:08.736 15814 15831 I RoomieLiveTest: PASS denied: change member identity
+09-14 15:36:08.978 15814 15831 I RoomieLiveTest: PASS denied: change household creator
+09-14 15:36:09.499 15814 15831 I RoomieLiveTest: PASS denied: change household invite code
+09-14 15:36:09.599 15814 15831 I RoomieLiveTest: PASS denied: enumerate invites
+09-14 15:36:09.807 15814 15831 I RoomieLiveTest: PASS denied: overwrite peer profile
+09-14 15:36:10.344 15814 15831 I RoomieLiveTest: PASS integration: creator roster after re-signin
+09-14 15:36:10.634 15814 15831 I RoomieLiveTest: PASS denied: creator reading peer private profile
+09-14 15:36:10.871 15814 15831 I RoomieLiveTest: PASS protected membership values unchanged
+09-14 15:36:12.021 15814 15831 I RoomieLiveTest: PASS denied: outsider self-join without invite proof
+09-14 15:36:12.274 15814 15831 I RoomieLiveTest: PASS denied: outsider chore read
+09-14 15:36:12.358 15814 15831 I RoomieLiveTest: PASS denied: outsider chore list
+09-14 15:36:12.464 15814 15831 I RoomieLiveTest: PASS denied: outsider chore create
+09-14 15:36:12.591 15814 15831 I RoomieLiveTest: PASS denied: outsider chore update
+09-14 15:36:12.683 15814 15831 I RoomieLiveTest: PASS denied: outsider household read
+09-14 15:36:12.764 15814 15831 I RoomieLiveTest: PASS denied: outsider roster read
+09-14 15:36:12.996 15814 15831 I RoomieLiveTest: PASS denied: unauthenticated profile read
+09-14 15:36:13.100 15814 15831 I RoomieLiveTest: PASS denied: unauthenticated household read
+09-14 15:36:13.195 15814 15831 I RoomieLiveTest: PASS denied: unauthenticated chore read
+09-14 15:36:13.195 15814 15831 I RoomieLiveTest: ACCESS CHECKS COMPLETED run=4d8c6c08e161 household=LZ37B0IGCs7c3BwCb97x integrationFailures=[]
+09-14 15:36:13.196 15814 15831 I RoomieLiveTest: ALL LIVE CHECKS PASSED run=4d8c6c08e161 household=LZ37B0IGCs7c3BwCb97x

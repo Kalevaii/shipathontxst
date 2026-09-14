@@ -1,0 +1,58 @@
+09-14 16:13:06.531 17537 17554 I RoomieLiveTest: PASS signup/profile creator=2E758wHM10McqEbcrLGoX17hI3Z2 email=roomie-test-598eb9d0d7c7-a@example.com
+09-14 16:13:06.860 17537 17554 I RoomieLiveTest: PASS signout/signin
+09-14 16:13:07.767 17537 17554 I RoomieLiveTest: PASS create household=kADHGYg2WHiNu5KICCuy invite=R4J7UW
+09-14 16:13:08.935 17537 17554 I RoomieLiveTest: PASS chore create/read/list and recurrence chore=hHHZIMsW505Y624Tleji
+09-14 16:13:09.941 17537 17554 I RoomieLiveTest: PASS denied: nonmember household read
+09-14 16:13:10.050 17537 17554 I RoomieLiveTest: PASS denied: nonmember roster read
+09-14 16:13:10.137 17537 17554 I RoomieLiveTest: PASS denied: prejoin chore read
+09-14 16:13:10.215 17537 17554 I RoomieLiveTest: PASS denied: prejoin chore list
+09-14 16:13:10.813 17537 17554 I RoomieLiveTest: PASS integration: join return/read
+09-14 16:13:11.079 17537 17554 I RoomieLiveTest: PASS integration: joiner direct household read
+09-14 16:13:11.206 17537 17554 I RoomieLiveTest: PASS integration: joiner creator membership read
+09-14 16:13:11.385 17537 17554 I RoomieLiveTest: PASS integration: joiner current household read
+09-14 16:13:11.462 17537 17554 I RoomieLiveTest: PASS integration: joiner roster read
+09-14 16:13:12.141 17537 17554 I RoomieLiveTest: PASS integration: joiner reads after re-signin
+09-14 16:13:12.141 17537 17554 I RoomieLiveTest: PASS membership committed joiner=Y5Et9RbTzGVakKtf8r0S62vFbi43 email=roomie-test-598eb9d0d7c7-b@example.com
+09-14 16:13:15.907 17537 17554 I RoomieLiveTest: PASS denied: assignment ownership edit
+09-14 16:13:16.131 17537 17554 I RoomieLiveTest: PASS denied: assignment points edit
+09-14 16:13:16.344 17537 17554 I RoomieLiveTest: PASS denied: assignment workload edit
+09-14 16:13:16.592 17537 17554 I RoomieLiveTest: PASS denied: assignment status edit
+09-14 16:13:16.804 17537 17554 I RoomieLiveTest: PASS denied: assignment due time edit
+09-14 16:13:17.062 17537 17554 I RoomieLiveTest: PASS denied: assignment deletion
+09-14 16:13:17.062 17537 17554 I RoomieLiveTest: PASS deterministic fair assignment/persistence/idempotency/protected fields
+09-14 16:13:18.303 17537 17554 I RoomieLiveTest: PASS denied: chore creator edit
+09-14 16:13:18.470 17537 17554 I RoomieLiveTest: PASS denied: chore household edit
+09-14 16:13:18.662 17537 17554 I RoomieLiveTest: PASS denied: chore creation timestamp edit
+09-14 16:13:18.980 17537 17554 I RoomieLiveTest: PASS denied: chore deletion
+09-14 16:13:18.980 17537 17554 I RoomieLiveTest: PASS joiner chore list/update and immutable metadata
+09-14 16:13:19.086 17537 17554 I RoomieLiveTest: PASS denied: peer private profile read
+09-14 16:13:19.164 17537 17554 I RoomieLiveTest: PASS denied: peer private lookup read
+09-14 16:13:19.427 17537 17554 I RoomieLiveTest: PASS denied: add another UID
+09-14 16:13:19.639 17537 17554 I RoomieLiveTest: PASS denied: change own contribution points
+09-14 16:13:19.910 17537 17554 I RoomieLiveTest: PASS denied: add workload score
+09-14 16:13:20.197 17537 17554 I RoomieLiveTest: PASS denied: change member identity
+09-14 16:13:20.383 17537 17554 I RoomieLiveTest: PASS denied: change household creator
+09-14 16:13:20.593 17537 17554 I RoomieLiveTest: PASS denied: change household invite code
+09-14 16:13:20.728 17537 17554 I RoomieLiveTest: PASS denied: enumerate invites
+09-14 16:13:20.977 17537 17554 I RoomieLiveTest: PASS denied: overwrite peer profile
+09-14 16:13:21.463 17537 17554 I RoomieLiveTest: PASS integration: creator roster after re-signin
+09-14 16:13:21.846 17537 17554 I RoomieLiveTest: PASS creator reads assignment snapshots after chore edit and re-signin
+09-14 16:13:21.960 17537 17554 I RoomieLiveTest: PASS denied: creator reading peer private profile
+09-14 16:13:22.187 17537 17554 I RoomieLiveTest: PASS protected membership values unchanged
+09-14 16:13:23.154 17537 17554 I RoomieLiveTest: PASS denied: outsider self-join without invite proof
+09-14 16:13:23.386 17537 17554 I RoomieLiveTest: PASS denied: outsider chore read
+09-14 16:13:23.480 17537 17554 I RoomieLiveTest: PASS denied: outsider chore list
+09-14 16:13:23.580 17537 17554 I RoomieLiveTest: PASS denied: outsider chore create
+09-14 16:13:23.678 17537 17554 I RoomieLiveTest: PASS denied: outsider chore update
+09-14 16:13:23.743 17537 17554 I RoomieLiveTest: PASS denied: outsider assignment read
+09-14 16:13:23.837 17537 17554 I RoomieLiveTest: PASS denied: outsider assignment list
+09-14 16:13:23.920 17537 17554 I RoomieLiveTest: PASS denied: outsider user assignment list
+09-14 16:13:24.018 17537 17554 I RoomieLiveTest: PASS denied: outsider assignment create
+09-14 16:13:24.096 17537 17554 I RoomieLiveTest: PASS denied: outsider household read
+09-14 16:13:24.186 17537 17554 I RoomieLiveTest: PASS denied: outsider roster read
+09-14 16:13:24.297 17537 17554 I RoomieLiveTest: PASS denied: unauthenticated profile read
+09-14 16:13:24.376 17537 17554 I RoomieLiveTest: PASS denied: unauthenticated household read
+09-14 16:13:24.466 17537 17554 I RoomieLiveTest: PASS denied: unauthenticated chore read
+09-14 16:13:24.551 17537 17554 I RoomieLiveTest: PASS denied: unauthenticated assignment read
+09-14 16:13:24.551 17537 17554 I RoomieLiveTest: ACCESS CHECKS COMPLETED run=598eb9d0d7c7 household=kADHGYg2WHiNu5KICCuy integrationFailures=[]
+09-14 16:13:24.552 17537 17554 I RoomieLiveTest: ALL LIVE CHECKS PASSED run=598eb9d0d7c7 household=kADHGYg2WHiNu5KICCuy

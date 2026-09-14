@@ -1,0 +1,27 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function member(hid) {
+      return request.auth != null
+        && firestore.get(/databases/(default)/documents/households/$(hid)/members/$(request.auth.uid)).data.userId == request.auth.uid;
+    }
+    match /households/{hid}/completions/{assignmentId}/proof/{workerUid}/{proofId} {
+      allow get: if member(hid);
+      allow create: if resource == null && member(hid) && request.auth.uid == workerUid
+        && assignmentId.matches('[A-Za-z0-9_-]{1,128}') && proofId.matches('[A-Za-z0-9_-]{1,128}')
+        && firestore.get(/databases/(default)/documents/households/$(hid)/assignments/$(assignmentId)).data.assignedUserId == workerUid
+        && firestore.get(/databases/(default)/documents/households/$(hid)/assignments/$(assignmentId)).data.status == 'ASSIGNED'
+        && request.resource.size > 0
+        && request.resource.metadata.keys().hasOnly(['proofType'])
+        && ((request.resource.metadata.proofType == 'PHOTO'
+              && request.resource.contentType in ['image/jpeg', 'image/png'] && request.resource.size <= 5 * 1024 * 1024)
+          || (request.resource.metadata.proofType == 'VIDEO'
+              && request.resource.contentType == 'video/mp4' && request.resource.size <= 20 * 1024 * 1024));
+      // Uploaded evidence is immutable. No enumeration or token-URL metadata changes.
+      allow list, update, delete: if false;
+    }
+    match /{object=**} {
+      allow read, write: if false;
+    }
+  }
+}

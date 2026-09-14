@@ -1,0 +1,8 @@
+
+com.rommie.app.LiveFirebaseCompletionTest:.
+
+Time: 15.629
+
+OK (1 test)
+
+

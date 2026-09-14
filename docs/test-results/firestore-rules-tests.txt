@@ -1,0 +1,43 @@
+$ firebase emulators:exec --project demo-roomie-rules --only firestore --config ../../firebase.rules-test.json 'node --test membership.test.mjs'
+i  emulators: Starting emulators: firestore
+i  emulators: Detected demo project ID "demo-roomie-rules", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: node --test membership.test.mjs
+✔ creator reads household and initial roster (3953.776458ms)
+✔ second user is denied before joining, then reads household and roster after atomic join (340.628042ms)
+✔ nonmember cannot read household, individual membership, or roster (106.17ms)
+✔ private profiles and lookups remain owner-only (53.857375ms)
+[2026-09-14T20:14:26.631Z]  @firebase/firestore: Firestore (12.19.0): GrpcConnection RPC 'Write' stream 0x536fed80 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L58, false for 'update' @ L104
+[2026-09-14T20:14:26.663Z]  @firebase/firestore: Firestore (12.19.0): GrpcConnection RPC 'Write' stream 0x536fed85 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L58, false for 'update' @ L104
+[2026-09-14T20:14:26.689Z]  @firebase/firestore: Firestore (12.19.0): GrpcConnection RPC 'Write' stream 0x536fed86 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L58, false for 'update' @ L104
+[2026-09-14T20:14:26.710Z]  @firebase/firestore: Firestore (12.19.0): GrpcConnection RPC 'Write' stream 0x536fed87 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L58, false for 'update' @ L104
+[2026-09-14T20:14:26.742Z]  @firebase/firestore: Firestore (12.19.0): GrpcConnection RPC 'Write' stream 0x536fed88 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L59, false for 'create' @ L104, false for 'update' @ L58, false for 'update' @ L104
+[2026-09-14T20:14:26.773Z]  @firebase/firestore: Firestore (12.19.0): GrpcConnection RPC 'Write' stream 0x536fed89 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'update' @ L44, false for 'update' @ L104
+✔ member cannot edit protected fields or add another UID (210.835ms)
+[2026-09-14T20:14:26.920Z]  @firebase/firestore: Firestore (12.19.0): GrpcConnection RPC 'Write' stream 0x536fed81 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+evaluation error at L59:26 for 'create' @ L59, false for 'create' @ L104, false for 'update' @ L58, false for 'update' @ L104, evaluation error at L91:24 for 'create' @ L91, false for 'create' @ L104, false for 'update' @ L90, false for 'update' @ L104, false for 'create' @ L59, false for 'create' @ L104, false for 'create' @ L91, false for 'create' @ L104
+✔ invite enumeration and incorrect-code join remain denied (135.959416ms)
+✔ unauthenticated reads remain denied (117.279917ms)
+✔ a private household pointer alone does not grant membership (101.815458ms)
+✔ a malformed membership with a different userId does not grant access (78.254709ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5709.526125
+✔  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator

@@ -1,0 +1,33 @@
+--------- beginning of main
+09-14 15:16:55.704 15030 15056 I RoomieLiveTest: PASS signup/profile creator=928srMR2jiXlRL7TdAN4tGxuUSo2 email=roomie-test-ffc94899c58b-a@example.com
+09-14 15:16:57.695 15030 15056 I RoomieLiveTest: PASS signout/signin
+09-14 15:16:59.122 15030 15056 I RoomieLiveTest: PASS create household=Q0PeXBUEqmINAIrJs1HU invite=UWCWZQ
+09-14 15:17:00.546 15030 15056 I RoomieLiveTest: PASS denied: nonmember household read
+09-14 15:17:00.729 15030 15056 I RoomieLiveTest: PASS denied: nonmember roster read
+09-14 15:17:01.633 15030 15056 I RoomieLiveTest: PASS integration: join return/read
+09-14 15:17:01.933 15030 15056 I RoomieLiveTest: PASS integration: joiner direct household read
+09-14 15:17:02.030 15030 15056 I RoomieLiveTest: PASS integration: joiner creator membership read
+09-14 15:17:02.429 15030 15056 I RoomieLiveTest: PASS integration: joiner current household read
+09-14 15:17:02.553 15030 15056 I RoomieLiveTest: PASS integration: joiner roster read
+09-14 15:17:03.890 15030 15056 I RoomieLiveTest: PASS integration: joiner reads after re-signin
+09-14 15:17:03.891 15030 15056 I RoomieLiveTest: PASS membership committed joiner=oMjvrcqoorRaSNzaASR7rXDyIep1 email=roomie-test-ffc94899c58b-b@example.com
+09-14 15:17:03.993 15030 15056 I RoomieLiveTest: PASS denied: peer private profile read
+09-14 15:17:04.106 15030 15056 I RoomieLiveTest: PASS denied: peer private lookup read
+09-14 15:17:04.620 15030 15056 I RoomieLiveTest: PASS denied: add another UID
+09-14 15:17:05.412 15030 15056 I RoomieLiveTest: PASS denied: change own contribution points
+09-14 15:17:06.078 15030 15056 I RoomieLiveTest: PASS denied: add workload score
+09-14 15:17:06.406 15030 15056 I RoomieLiveTest: PASS denied: change member identity
+09-14 15:17:06.625 15030 15056 I RoomieLiveTest: PASS denied: change household creator
+09-14 15:17:06.926 15030 15056 I RoomieLiveTest: PASS denied: change household invite code
+09-14 15:17:07.266 15030 15056 I RoomieLiveTest: PASS denied: enumerate invites
+09-14 15:17:07.494 15030 15056 I RoomieLiveTest: PASS denied: overwrite peer profile
+09-14 15:17:08.421 15030 15056 I RoomieLiveTest: PASS integration: creator roster after re-signin
+09-14 15:17:08.600 15030 15056 I RoomieLiveTest: PASS denied: creator reading peer private profile
+09-14 15:17:08.846 15030 15056 I RoomieLiveTest: PASS protected membership values unchanged
+09-14 15:17:14.476 15030 15056 I RoomieLiveTest: PASS denied: outsider self-join without invite proof
+09-14 15:17:15.467 15030 15056 I RoomieLiveTest: PASS denied: outsider household read
+09-14 15:17:15.838 15030 15056 I RoomieLiveTest: PASS denied: outsider roster read
+09-14 15:17:16.426 15030 15056 I RoomieLiveTest: PASS denied: unauthenticated profile read
+09-14 15:17:16.581 15030 15056 I RoomieLiveTest: PASS denied: unauthenticated household read
+09-14 15:17:16.581 15030 15056 I RoomieLiveTest: ACCESS CHECKS COMPLETED run=ffc94899c58b household=Q0PeXBUEqmINAIrJs1HU integrationFailures=[]
+09-14 15:17:16.595 15030 15056 I RoomieLiveTest: ALL LIVE CHECKS PASSED run=ffc94899c58b household=Q0PeXBUEqmINAIrJs1HU

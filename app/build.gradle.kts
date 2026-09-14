@@ -3,14 +3,24 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
+// Explicit opt-in keeps mock-only teammates independent of cloud configuration.
+val firebaseEnabled = providers.gradleProperty("roomie.firebase.enabled")
+    .map { it.toBooleanStrict() }.getOrElse(false)
+if (firebaseEnabled) {
+    check(file("google-services.json").isFile) {
+        "Firebase enabled: add app/google-services.json for com.rommie.app. See docs/FIREBASE.md."
+    }
+    apply(plugin = "com.google.gms.google-services")
+}
+
 android {
-    namespace = "com.example.rommie"
+    namespace = "com.rommie.app"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.example.rommie"
+        applicationId = "com.rommie.app"
         minSdk = 24
         targetSdk = 37
         versionCode = 1
@@ -36,6 +46,12 @@ android {
 }
 
 dependencies {
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.play.services)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
